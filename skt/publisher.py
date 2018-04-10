@@ -93,4 +93,4 @@ def getpublisher(ptype, parg, pburl):
     for cls in publisher.__subclasses__():
         if cls.TYPE == ptype:
             return cls(parg, pburl)
-    raise ValueError("Unknown publisher typeasdfasdfasdfasdfasdfasdfasdfasdfadfadfadfasdfasdfasdfasdf: %s" % ptype)
+    raise ValueError("Unknown publisher type: %s" % ptype)
