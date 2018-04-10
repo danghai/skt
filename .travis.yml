@@ -6,7 +6,6 @@ script:
     - pip install .
     # Run tests and linters.
     - flake8 --show-source .
-    - flake8 . --count --exit-zero --max-complexity=10 --max-line-length=40 --statistics
     - pylint tests
     - python -m unittest discover tests
     # Test the uninstallation of skt,
