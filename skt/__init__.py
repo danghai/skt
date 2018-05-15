@@ -163,7 +163,7 @@ class ktree(object):
         Returns:
             Full path to the written file.
         """
-        fpath = '/'.join([self.wdir, fname])
+        fpath = os.path.abspath(os.path.expanduser(fname))
         with open(fpath, 'w') as f:
             for iitem in self.info:
                 f.write(','.join(iitem) + "\n")
