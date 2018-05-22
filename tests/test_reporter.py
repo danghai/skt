@@ -27,7 +27,7 @@ from tests import misc
 
 
 class TestConsoleLog(unittest.TestCase):
-    """Test cases for reporter.consolelog class"""
+    """Test cases for reporter.ConsoleLog class"""
     @staticmethod
     @contextmanager
     def request_get_mocked(filename):
