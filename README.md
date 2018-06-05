@@ -14,6 +14,7 @@ Install dependencies needed for running skt like this:
 
     sudo dnf install -y python2 python2-junit_xml beaker-client
 
+
 Dependencies needed to build kernels:
 
     sudo dnf install -y bison flex dnf-plugins-core
