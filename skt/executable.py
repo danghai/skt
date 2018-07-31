@@ -34,7 +34,7 @@ import skt
 import skt.publisher
 import skt.reporter
 import skt.runner
-from skt.kernelbuilder import KernelBuilder, CommandTimeoutError, ParsingError
+from skt.kernelbuilder import KernelBuilder, CommandTimeoutError, ParsingError, verify_target
 from skt.kerneltree import KernelTree, PatchApplicationError
 from skt.misc import SKT_SUCCESS, SKT_FAIL, SKT_ERROR
 
@@ -322,7 +322,7 @@ def cmd_build(cfg):
         cfgtype=cfg.get('cfgtype'),
         extra_make_args=cfg.get('makeopts'),
         enable_debuginfo=cfg.get('enable_debuginfo'),
-        rh_configs_glob=cfg.get('rh_configs_glob')
+        target=cfg.get('target')
     )
 
     # Clean the kernel source with 'make mrproper' if requested.
@@ -603,6 +603,12 @@ def setup_parser():
         ),
         action="store_true",
         default=False
+    )
+    parser.add_argument(
+        "--target",
+        type=str,
+        help="Set the target to execute as",
+        default=None
     )
 
     subparsers = parser.add_subparsers()
@@ -925,6 +931,11 @@ def load_config(args):
             if config.has_option(section, 'ref'):
                 mdesc.append(config.get(section, 'ref'))
             cfg['merge_ref'].append(mdesc)
+
+    (_, config_arch) = verify_target(cfg.get('target'))
+    if config_arch is None:
+        raise Exception("Unsupport target: %s" % cfg.get('target'))
+    cfg['config_arch'] = config_arch
 
     # Get an absolute path for the work directory
     if cfg.get('workdir'):

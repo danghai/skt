@@ -23,7 +23,7 @@ defaults: &defaults
     - run:
         name: Test `skt build`
         command: |
-            skt -vv --state -d workdir --rc sktrc build -c config \
+            skt -vv --state -d workdir --rc sktrc --target x86_64 build -c config \
                 --cfgtype tinyconfig
         working_directory: /tmp/skt_test
     - store_artifacts:

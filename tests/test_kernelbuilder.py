@@ -55,6 +55,34 @@ class KBuilderTest(unittest.TestCase):
         """Tear down test fixtures."""
         shutil.rmtree(self.tmpdir)
 
+    def test_verify_target(self):
+        """Ensure verify_target returns correct info"""
+        (build_arch, config_arch) = kernelbuilder.verify_target('s390x')
+
+        self.assertEqual(build_arch, 's390')
+        self.assertEqual(config_arch, 's390x')
+
+    def test_verify_target_variant(self):
+        """Ensure verify_target returns correct info"""
+        (build_arch, config_arch) = kernelbuilder.verify_target('s390x-kdump')
+
+        self.assertEqual(build_arch, 's390')
+        self.assertEqual(config_arch, 's390x-kdump')
+
+    def test_verify_target_empty(self):
+        """Ensure verify_target returns correct info with empty info."""
+        (build_arch, config_arch) = kernelbuilder.verify_target(None)
+
+        self.assertNotEqual(build_arch, None)
+        self.assertNotEqual(config_arch, None)
+
+    def test_verify_target_bad_target(self):
+        """Ensure verify_target returns None with bad info."""
+        (build_arch, config_arch) = kernelbuilder.verify_target('foo')
+
+        self.assertEqual(build_arch, None)
+        self.assertEqual(config_arch, None)
+
     def test_clean_kernel_source(self):
         """Ensure clean_kernel_source() calls 'make mrproper'."""
         with self.ctx_check_call as m_check_call:
@@ -95,6 +123,14 @@ class KBuilderTest(unittest.TestCase):
         result = self.kbuilder._KernelBuilder__get_build_arch()
 
         self.assertEqual('s390x', result)
+
+    def test_set_build_arch(self):
+        """Ensure __set_build_arch() sets the ARCH env variable."""
+        # pylint: disable=W0212,E1101
+        arch = 's390x'
+        self.kbuilder._KernelBuilder__set_build_arch(arch)
+
+        self.assertEqual(arch, os.environ['ARCH'])
 
     def test_adjust_config_option_bogus(self):
         """Ensure __adjust_config_option() rejects bogus actions."""
